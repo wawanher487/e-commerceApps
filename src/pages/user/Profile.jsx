@@ -3,6 +3,7 @@ import api from "../../utils/api";
 import { IMAGE_URL_USER } from "../../config/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 export default function Profile() {
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -141,7 +142,7 @@ export default function Profile() {
       const body = new FormData();
       body.append("name", formData.name);
       body.append("email", formData.email);
-      if (formData.image) body.append("profileImage", formData.image); // must match multer field
+      if (formData.image) body.append("profileImage", formData.image);
 
       // gunakan PATCH sesuai backend
       const res = await api.patch("/user/profile", body, {
@@ -152,9 +153,8 @@ export default function Profile() {
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      // kalau backend mengembalikan nama file baru, fetch lagi gambarnya (pakai header)
+      // Jika ada gambar baru, refresh gambar dari server
       if (updatedUser.profileImage) {
-        // clear preview (local selected file) and fetch server image
         if (preview) {
           URL.revokeObjectURL(preview);
           setPreview(null);
@@ -165,11 +165,35 @@ export default function Profile() {
       // reset image file in form
       setFormData((p) => ({ ...p, image: null }));
 
-      toast.success("Profil berhasil diperbarui!");
+      console.log("✅ update success:", res);
+      alert("Profil berhasil diperbarui!");
+      toast.success("Profil berhasil diperbarui!", { autoClose: 2500 });
     } catch (err) {
-      console.error("Gagal update profil:", err);
-      const msg = err.response?.data?.message || "Gagal memperbarui profil";
-      toast.error(msg);
+      console.log("❌ error update:", err);
+      toast.error("Cek toast di error block");
+
+      // Ambil pesan validasi dari backend (misalnya email duplikat)
+      const msg = err.response?.data?.message || "❌ Gagal memperbarui profil";
+
+      // Jika email sudah digunakan, kasih pesan khusus
+      if (
+        msg.toLowerCase().includes("email") &&
+        msg.toLowerCase().includes("sudah")
+      ) {
+        alert("Email ini sudah digunakan oleh pengguna lain!!");
+        toast.warn("Email ini sudah digunakan oleh pengguna lain!");
+      } else {
+        alert(msg);
+        toast.error(msg);
+      }
+      //Kembalikan form ke data lama agar tetap sinkron dengan database
+      if (user) {
+        setFormData({
+          name: user.name || "",
+          email: user.email || "",
+          image: null,
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -206,8 +230,7 @@ export default function Profile() {
     );
 
   // choose src: preview (local file) > fetched image (object URL) > placeholder
-  const displaySrc =
-    preview || imageSrc || "https://via.placeholder.com/150x150?text=No+Image";
+  const displaySrc = preview || imageSrc || defaultAvatar;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -306,8 +329,6 @@ export default function Profile() {
           </button>
         </form>
       </div>
-
-      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }

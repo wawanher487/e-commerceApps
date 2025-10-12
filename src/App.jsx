@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
@@ -55,6 +57,15 @@ function App() {
           <Route path="profile" element={<AdminProfile />} /> */}
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </BrowserRouter>
   );
 }
