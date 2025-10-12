@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL } from "../config/api";
+import { API_URL } from "../../config/api";
 
 function Register() {
   const [name, setName] = useState("");

@@ -1,30 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { API_URL } from "../config/api";
+import React, { useState } from "react";
+import { Link, useNavigate, Navigate } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handlesubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard");
-    } else {
-      alert(data.message);
+      if (res.ok) {
+        // Simpan token & data user ke localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("role", data.user.role);
+
+        // Arahkan ke dashboard sesuai role
+        if (data.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
+      } else {
+        alert(data.message || "Login gagal!");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Terjadi kesalahan pada server");
     }
   };
+
+  if (token && user?.role) {
+    return <Navigate to={`/${user.role}/dashboard`} replace />;
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -33,10 +53,10 @@ function Login() {
         <div className="text-center p-10">
           <img
             src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
-            alt="shopping "
+            alt="shopping"
             className="w-80 mx-auto"
           />
-          <h2 className="text-xl font semi-bold mt-4 text-gray-700">
+          <h2 className="text-xl font-semibold mt-4 text-gray-700">
             Temukan Penawaran Terbaik
           </h2>
         </div>
@@ -53,6 +73,7 @@ function Login() {
             />
             <h1 className="text-2xl font-bold text-gray-800">E-COMMERCE</h1>
           </div>
+
           <h2 className="text-2xl font-semibold text-gray-800 mb-1">
             Masuk ke Akun Anda
           </h2>
@@ -74,6 +95,7 @@ function Login() {
                 required
               />
             </div>
+
             <div className="mb-4">
               <input
                 type="password"
@@ -89,6 +111,7 @@ function Login() {
               <input type="checkbox" className="mr-2" />
               <label className="text-sm text-gray-600">Ingat Saya</label>
             </div>
+
             <button
               type="submit"
               className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
