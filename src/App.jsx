@@ -17,6 +17,8 @@ import UserProfile from "./pages/user/Profile";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import AdminUsers from "./pages/admin/users";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -52,8 +54,9 @@ function App() {
           }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
-          {/* <Route path="users" element={<Users />} />
-          <Route path="products" element={<Products />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="users" element={<AdminUsers />} />
+          {/* 
           <Route path="profile" element={<AdminProfile />} /> */}
         </Route>
       </Routes>

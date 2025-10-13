@@ -8,6 +8,9 @@ export default function AdminLayout() {
         <h1 className="font-bold text-lg">Admin Dashboard</h1>
         <div className="space-x-4">
           <Link to="/admin/dashboard" className="hover:underline">
+            Home
+          </Link>
+          <Link to="/admin/products" className="hover:underline">
             Produk
           </Link>
           <Link to="/admin/users" className="hover:underline">
