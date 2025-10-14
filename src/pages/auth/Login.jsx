@@ -23,7 +23,10 @@ function Login() {
 
       if (res.ok) {
         // Simpan token & data user ke localStorage
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accessToken || data.token);
+        if (data.refreshToken) {
+          localStorage.setItem("refreshToken", data.refreshToken);
+        }
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("role", data.user.role);
 

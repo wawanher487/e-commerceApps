@@ -20,6 +20,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import AdminUsers from "./pages/admin/users";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminProfile from "./pages/admin/profile";
 
 function App() {
   return (
@@ -56,8 +57,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="users" element={<AdminUsers />} />
-          {/* 
-          <Route path="profile" element={<AdminProfile />} /> */}
+          <Route path="profile" element={<AdminProfile />} />
         </Route>
       </Routes>
       <ToastContainer

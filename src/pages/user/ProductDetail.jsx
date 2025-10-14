@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../../utils/api";
 import { IMAGE_URL_PRODUCT } from "../../config/api";
+import defaultProduct from "../../assets/default-product.png";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -77,11 +78,7 @@ export default function ProductDetail() {
       </Link>
 
       <div className="bg-white rounded-xl shadow-md p-6 max-w-3xl mx-auto">
-        <img
-          src={imageUrl || "https://via.placeholder.com/200x150?text=No+Image"}
-          alt={product.name}
-          className="w-full h-full object-cover rounded-lg"
-        />
+        <img src={imageUrl || defaultProduct} alt={product.name} />
 
         <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
         <p className="text-gray-700 mb-4">{product.description}</p>

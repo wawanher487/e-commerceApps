@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { Link } from "react-router-dom";
 import { IMAGE_URL_PRODUCT } from "../../config/api";
+import defaultProduct from "../../assets/default-product.png";
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
@@ -69,10 +70,7 @@ export default function Dashboard() {
           >
             <div className="aspect-[4/3] w-full mb-3">
               <img
-                src={
-                  imageUrls[product._id] ||
-                  "https://via.placeholder.com/200x150?text=Loading..."
-                }
+                src={imageUrls[product._id] || defaultProduct}
                 alt={product.name}
                 className="w-full h-full object-cover rounded-lg"
               />

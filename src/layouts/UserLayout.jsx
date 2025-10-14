@@ -15,23 +15,15 @@ export default function UserLayout() {
     <div className="min-h-screen flex flex-col">
       <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
         {/* Judul kiri */}
-        <h1 className="font-bold text-lg">User Dashboard</h1>
+        <h1 className="font-bold text-lg">👋 Hi, {user?.name || "User"}</h1>
 
-        {/* Tengah: menu navigasi */}
-        <div className="space-x-5">
+        <div className="space-x-4">
           <Link to="/user/dashboard" className="hover:underline">
             Produk
           </Link>
           <Link to="/user/profile" className="hover:underline">
             Profil
           </Link>
-        </div>
-
-        {/* Kanan: nama user & tombol logout */}
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-blue-100">
-            👋 Hi, {user?.name || "User"}
-          </span>
           <button
             onClick={handleLogout}
             className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
@@ -40,7 +32,6 @@ export default function UserLayout() {
           </button>
         </div>
       </nav>
-
       <main className="flex-1 p-6 bg-gray-50">
         <Outlet />
       </main>
