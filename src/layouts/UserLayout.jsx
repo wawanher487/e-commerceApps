@@ -7,7 +7,7 @@ export default function UserLayout() {
   const handleLogout = () => {
     if (confirm("Yakin ingin logout?")) {
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/";
     }
   };
 
