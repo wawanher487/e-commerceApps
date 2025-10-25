@@ -166,7 +166,7 @@ export default function Profile() {
       setFormData((p) => ({ ...p, image: null }));
 
       console.log("✅ update success:", res);
-      alert("Profil berhasil diperbarui!");
+      // alert("Profil berhasil diperbarui!");
       toast.success("Profil berhasil diperbarui!", { autoClose: 2500 });
     } catch (err) {
       console.log("❌ error update:", err);
