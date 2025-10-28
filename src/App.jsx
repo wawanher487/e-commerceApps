@@ -14,6 +14,9 @@ import Register from "./pages/auth/Register";
 import UserDashboard from "./pages/user/Dashboard";
 import ProductDetailUser from "./pages/user/ProductDetail";
 import UserProfile from "./pages/user/Profile";
+import CartPage from "./pages/user/Cartpage";
+import OrderListPage from "./pages/user/OrderListPage";
+import OrderDetailPage from "./pages/user/OrderDetailPage";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -43,6 +46,9 @@ function App() {
           <Route path="dashboard" element={<UserDashboard />} />
           <Route path="product/:id" element={<ProductDetailUser />} />
           <Route path="profile" element={<UserProfile />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="/user/orders" element={<OrderListPage />} />
+          <Route path="/user/orders/:id" element={<OrderDetailPage />} />
         </Route>
 
         {/* Admin Area */}

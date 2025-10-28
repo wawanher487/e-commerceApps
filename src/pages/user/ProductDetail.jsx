@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import api from "../../utils/api";
 import { IMAGE_URL_PRODUCT } from "../../config/api";
 import defaultProduct from "../../assets/default-product.png";
@@ -20,9 +21,12 @@ export default function ProductDetail() {
 
         if (product.image) {
           const token = localStorage.getItem("token");
-          const imageRes = await fetch(`${IMAGE_URL_PRODUCT}/${product.image}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const imageRes = await fetch(
+            `${IMAGE_URL_PRODUCT}/${product.image}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
 
           if (imageRes.ok) {
             const blob = await imageRes.blob();
@@ -58,7 +62,12 @@ export default function ProductDetail() {
       });
 
       const data = await res.json();
-      alert(data.message || (res.ok ? "Berhasil menambahkan ke keranjang" : "Gagal menambahkan ke keranjang"));
+      alert(
+        data.message ||
+          (res.ok
+            ? "Berhasil menambahkan ke keranjang"
+            : "Gagal menambahkan ke keranjang")
+      );
     } catch (err) {
       console.error("Gagal menambahkan ke keranjang:", err);
       alert("Terjadi kesalahan saat menambahkan ke keranjang");
@@ -83,12 +92,12 @@ export default function ProductDetail() {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <Link
-          to="/user/dashboard"
-          className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center mb-6 transition-all"
+          to="/user/Dashboard"
+          className="inline-flex items-center gap-2 text-gray-700 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all duration-200 mb-4"
         >
-          ← Kembali ke Dashboard
+          <ArrowLeft size={18} />
+          <span className="font-medium">Kembali ke Dashboard</span>
         </Link>
-
         <div className="bg-white rounded-2xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Gambar Produk */}
           <div className="flex justify-center items-center">
@@ -101,12 +110,19 @@ export default function ProductDetail() {
 
           {/* Detail Produk */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-3">{product.name}</h1>
-            <p className="text-gray-600 leading-relaxed mb-4">{product.description}</p>
+            <h1 className="text-3xl font-bold text-gray-800 mb-3">
+              {product.name}
+            </h1>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              {product.description}
+            </p>
 
             <div className="flex items-center gap-4 mb-3">
               <p className="text-lg font-medium text-gray-700">
-                Stok: <span className="font-semibold text-green-600">{product.stock}</span>
+                Stok:{" "}
+                <span className="font-semibold text-green-600">
+                  {product.stock}
+                </span>
               </p>
             </div>
 
