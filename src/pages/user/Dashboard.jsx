@@ -83,6 +83,9 @@ export default function Dashboard() {
                 ? product.description.substring(0, 60) + "..."
                 : product.description}
             </p>
+            <p className=" text-bold-600 font-semibold">
+              stock : {product.stock}
+            </p>
             <p className="mt-2 text-blue-600 font-semibold">
               Rp {product.price.toLocaleString("id-ID")}
             </p>

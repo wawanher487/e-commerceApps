@@ -21,6 +21,12 @@ export default function UserLayout() {
           <Link to="/user/dashboard" className="hover:underline">
             Produk
           </Link>
+          <Link to="/user/dashboard" className="hover:underline">
+            Cart
+          </Link>
+          <Link to="/user/dashboard" className="hover:underline">
+            Order
+          </Link>
           <Link to="/user/profile" className="hover:underline">
             Profil
           </Link>
