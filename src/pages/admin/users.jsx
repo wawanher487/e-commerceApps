@@ -249,7 +249,7 @@ export default function Users() {
             placeholder="Role"
             value={form.role}
             onChange={handleChange}
-            className="border rounded p-2 col-span-2"
+            className="border rounded p-2"
           />
           <input
             type="file"

@@ -6,6 +6,7 @@ import defaultProduct from "../../assets/default-product.png";
 export default function CartPage() {
   const [cart, setCart] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
+  const [imageUrls, setImageUrls] = useState({});
 
   useEffect(() => {
     fetchCart();
@@ -14,7 +15,31 @@ export default function CartPage() {
   const fetchCart = async () => {
     try {
       const res = await api.get("/cart");
+      const cartsData = res.data.cart.items.map((item) => item.productId);
       setCart(res.data.cart);
+      // Ambil semua gambar dengan token
+      for (const product of cartsData) {
+        if (product.image) {
+          const token = localStorage.getItem("token");
+          const imageRes = await fetch(
+            `${IMAGE_URL_PRODUCT}/${product.image}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (imageRes.ok) {
+            const blob = await imageRes.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            setImageUrls((prev) => ({
+              ...prev,
+              [product._id]: imageUrl,
+            }));
+          }
+        }
+      }
     } catch (err) {
       console.error("Gagal mengambil cart:", err);
     } finally {
@@ -96,16 +121,10 @@ export default function CartPage() {
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={
-                    item.productId?.image
-                      ? `${IMAGE_URL_PRODUCT}/${item.productId.image}`
-                      : defaultProduct
-                  }
-                  onError={(e) => (e.target.src = defaultProduct)}
+                  src={imageUrls[item.productId?._id] || defaultProduct}
                   alt={item.productId?.name || item.nameAtAdded}
                   className="w-20 h-20 object-cover rounded-lg"
                 />
-
                 <div>
                   <p className="font-semibold text-lg text-gray-800">
                     {item.productId?.name || item.nameAtAdded}

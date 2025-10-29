@@ -11,6 +11,7 @@ export default function Products() {
   const [form, setForm] = useState({
     name: "",
     price: "",
+    stock: "",
     description: "",
     image: null,
   });
@@ -84,6 +85,7 @@ export default function Products() {
     const formData = new FormData();
     formData.append("name", form.name);
     formData.append("price", form.price);
+    formData.append("stock", form.stock);
     formData.append("description", form.description);
     if (form.image) formData.append("image", form.image);
 
@@ -92,16 +94,16 @@ export default function Products() {
         await api.put(`/products/${editingId}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        alert("Produk berhasil diperbarui!");
+        // alert("Produk berhasil diperbarui!");
         toast.success("Produk berhasil diperbarui!");
       } else {
         await api.post("/products", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        alert("Produk berhasil ditambahkan!");
+        // alert("Produk berhasil ditambahkan!");
         toast.success("Produk berhasil ditambahkan!");
       }
-      setForm({ name: "", price: "", description: "", image: null });
+      setForm({ name: "", price: "", stock: "", description: "", image: "" });
       setEditingId(null);
       fetchProducts();
     } catch (err) {
@@ -135,8 +137,9 @@ export default function Products() {
     setForm({
       name: product.name,
       price: product.price,
+      stock: product.stock,
       description: product.description || "",
-      image: null,
+      image: null || "",
     });
   };
 
@@ -173,18 +176,28 @@ export default function Products() {
             className="border rounded p-2"
             required
           />
-          <textarea
-            name="description"
-            placeholder="Deskripsi"
-            value={form.description}
+          <input
+            type="number"
+            name="stock"
+            placeholder="Stock"
+            value={form.stock}
             onChange={handleChange}
-            className="border rounded p-2 col-span-2"
+            className="border rounded p-2"
+            required
           />
           <input
             type="file"
             name="image"
             accept="image/*"
             onChange={handleChange}
+            className="border rounded p-2"
+          />
+          <textarea
+            name="description"
+            placeholder="Deskripsi"
+            value={form.description}
+            onChange={handleChange}
+            className="border rounded p-2 col-span-2"
           />
         </div>
 
@@ -212,6 +225,7 @@ export default function Products() {
                 <th className="p-2">Gambar</th>
                 <th className="p-2">Nama</th>
                 <th className="p-2">Harga</th>
+                <th className="p-2">stock</th>
                 <th className="p-2">Deskripsi</th>
                 <th className="p-2">Aksi</th>
               </tr>
@@ -230,6 +244,7 @@ export default function Products() {
                     </td>
                     <td className="p-2">{p.name}</td>
                     <td className="p-2">Rp {p.price.toLocaleString()}</td>
+                    <td className="p-2">{p.stock.toLocaleString()}</td>
                     <td className="p-2">{p.description || "-"}</td>
                     <td className="p-2 flex gap-2">
                       <button

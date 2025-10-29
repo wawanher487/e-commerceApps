@@ -9,6 +9,7 @@ export default function OrderDetailPage() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageUrls, setImageUrls] = useState({});
 
   useEffect(() => {
     fetchOrder();
@@ -17,7 +18,38 @@ export default function OrderDetailPage() {
   const fetchOrder = async () => {
     try {
       const res = await api.get(`/orders/${id}`);
-      setOrder(res.data.order);
+      const orderData = res.data.order;
+      setOrder(orderData);
+
+      //ambil token dari localStorage
+      const token = localStorage.getItem("token");
+      const newImageUrls = {};
+
+      // ambil gambar satu per satu dari setiap produk dalam pesanan
+      for (const item of orderData.items) {
+        const product = item.productId;
+        if (product?.image) {
+          try {
+            const imgRes = await fetch(
+              `${IMAGE_URL_PRODUCT}/${product.image}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (imgRes.ok) {
+              const blob = await imgRes.blob();
+              newImageUrls[product._id] = URL.createObjectURL(blob);
+            }
+          } catch (imgErr) {
+            console.error("Gagal memuat gambar:", imgErr);
+          }
+        }
+      }
+
+      setImageUrls(newImageUrls);
     } catch (err) {
       console.error("Gagal mengambil detail pesanan:", err);
       alert("Gagal mengambil detail pesanan");
@@ -73,9 +105,10 @@ export default function OrderDetailPage() {
             <div key={item._id} className="flex items-center gap-4 py-3">
               <img
                 src={
-                  item.productId?.image
+                  imageUrls[item.productId?._id] ||
+                  (item.productId?.image
                     ? `${IMAGE_URL_PRODUCT}/${item.productId.image}`
-                    : defaultProduct
+                    : defaultProduct)
                 }
                 onError={(e) => (e.target.src = defaultProduct)}
                 alt={item.productId?.name || item.nameAtOrder}
