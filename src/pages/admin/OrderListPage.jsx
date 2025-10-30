@@ -81,11 +81,12 @@ export default function OrderListPage() {
                     }
                     className="border rounded-md px-2 py-1"
                   >
+                    <option value="cancelled">Cancelled</option>
                     <option value="pending">Pending</option>
                     <option value="processed">Processed</option>
                     <option value="shipped">Shipped</option>
+                    <option value="paid">paid</option>
                     <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
                   </select>
                 </td>
                 <td className="px-4 py-3">
