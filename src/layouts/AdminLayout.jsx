@@ -22,6 +22,9 @@ export default function AdminLayout() {
           <Link to="/admin/products" className="hover:underline">
             Produk
           </Link>
+          <Link to="/admin/orders" className="hover:underline">
+            Order
+          </Link>
           <Link to="/admin/users" className="hover:underline">
             Users
           </Link>
